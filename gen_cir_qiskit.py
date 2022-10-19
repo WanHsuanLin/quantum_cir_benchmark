@@ -4,8 +4,8 @@ from qiskit.transpiler.passes import Unroller
 
 
 unroller = Unroller(basis=['u', 'cx'])
-gen_cir = "qft"
-qubit_size = [10, 12, 14, 16]
+gen_cir = "qaoa"
+qubit_size = [16, 20, 24, 28]
 
 if gen_cir == "qft":
     for qubit_num in qubit_size:
@@ -15,6 +15,22 @@ if gen_cir == "qft":
         unrolled_circuit.draw('mpl')
         qasm = unrolled_circuit.qasm()
         file_name = "qft/{}.qasm".format(cir_name)
+        output_file = open(file_name, "w")
+        output_file.write(qasm)
+elif gen_cir == "qaoa":
+    for qubit_num in qubit_size:
+        import networkx as nx
+        from math import pi
+        from qiskit import QuantumCircuit
+        trial = 0
+        cir = QuantumCircuit(qubit_num)
+        gate_list = list(nx.random_regular_graph(3, int(qubit_num), trial).edges)
+        for g in gate_list:
+            if len(g) == 2:
+                cir.rzz(pi/4, g[0], g[1])
+        cir_name = 'qaoa_{}_{}'.format(qubit_num, trial)
+        qasm = cir.qasm()
+        file_name = "qaoa/{}.qasm".format(cir_name)
         output_file = open(file_name, "w")
         output_file.write(qasm)
 elif gen_cir == "hamiltonian":
