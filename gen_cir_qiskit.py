@@ -4,8 +4,8 @@ from qiskit.transpiler.passes import Unroller
 
 
 unroller = Unroller(basis=['u', 'cx'])
-gen_cir = "qft"
-qubit_size = [4]
+gen_cir = "qaoa"
+qubit_size = [4,6,8]
 
 if gen_cir == "qft":
     for qubit_num in qubit_size:
@@ -27,8 +27,8 @@ elif gen_cir == "qaoa":
         from qiskit import QuantumCircuit
         trial = 0
         cir = QuantumCircuit(qubit_num)
-        # gate_list = list(nx.random_regular_graph(3, int(qubit_num), trial).edges)
-        gate_list = qaoa[qubit_num]
+        gate_list = list(nx.random_regular_graph(3, int(qubit_num), trial).edges)
+        # gate_list = qaoa[qubit_num]
         for g in gate_list:
             if len(g) == 2:
                 cir.rzz(pi/4, g[0], g[1])
