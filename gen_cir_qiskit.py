@@ -5,7 +5,7 @@ from qiskit.transpiler.passes import Unroller
 
 unroller = Unroller(basis=['u', 'cx'])
 gen_cir = "qaoa"
-qubit_size = [60, 70, 80]
+qubit_size = [40, 50]
 
 if gen_cir == "qft":
     for qubit_num in qubit_size:
