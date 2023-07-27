@@ -5,7 +5,7 @@ from qiskit.transpiler.passes import Unroller
 
 unroller = Unroller(basis=['u', 'cx'])
 gen_cir = "qaoa"
-qubit_size = [26, 30, 36]
+qubit_size = [10, 14, 60, 70, 80, 90, 100]
 
 if gen_cir == "qft":
     for qubit_num in qubit_size:
@@ -125,39 +125,39 @@ elif gen_cir == "qaoa":
         [(6, 12), (6, 18), (6, 3), (12, 17), (12, 2), (18, 17), (18, 14), (3, 7), (3, 5), (7, 0), (7, 14), (4, 21), (4, 11), (4, 10), (21, 17), (21, 2), (0, 2), (0, 14), (5, 19), (5, 9), (19, 11), (19, 10), (9, 11), (9, 1), (1, 20), (1, 8), (15, 20), (15, 16), (15, 13), (20, 8), (8, 13), (13, 16), (16, 10)]
     ]
     }
-    from qiskit import QuantumCircuit
-    from math import pi
-    for qubit_num in qubit_size:
-        for trial in range(10):
-            cir = QuantumCircuit(qubit_num)
-            gate_list = graphs[qubit_num]
-            for g in gate_list:
-                if len(g) == 2:
-                    cir.rzz(pi/4, g[0], g[1])
-            cir_name = 'qaoa_{}_{}'.format(qubit_num, trial)
-            qasm = cir.qasm()
-            file_name = "tan_qaoa/{}.qasm".format(cir_name)
-            output_file = open(file_name, "w")
-            output_file.write(qasm)
+    # from qiskit import QuantumCircuit
+    # from math import pi
+    # for qubit_num in qubit_size:
+    #     for trial in range(10):
+    #         cir = QuantumCircuit(qubit_num)
+    #         gate_list = graphs[qubit_num]
+    #         for g in gate_list:
+    #             if len(g) == 2:
+    #                 cir.rzz(pi/4, g[0], g[1])
+    #         cir_name = 'qaoa_{}_{}'.format(qubit_num, trial)
+    #         qasm = cir.qasm()
+    #         file_name = "tan_qaoa/{}.qasm".format(cir_name)
+    #         output_file = open(file_name, "w")
+    #         output_file.write(qasm)
     # qaoa = {16: [(4, 15), (4, 11), (4, 10), (15, 10), (15, 7), (0, 5), (0, 13), (0, 12), (5, 9), (5, 1), (2, 11), (2, 7), (2, 12), (11, 1), (1, 9), (9, 7), (10, 8), (13, 14), (13, 6), (14, 6), (14, 8), (6, 3), (3, 12), (3, 8)],
     #         20: [(3, 7), (3, 6), (3, 11), (7, 5), (7, 10), (12, 16), (12, 13), (12, 17), (16, 9), (16, 8), (13, 17), (13, 19), (5, 10), (5, 11), (10, 19), (9, 14), (9, 0), (14, 4), (14, 15), (8, 18), (8, 19), (18, 1), (18, 15), (1, 0), (1, 4), (2, 17), (2, 4), (2, 6), (6, 11), (15, 0)],
     #         24: [(6, 15), (6, 14), (6, 7), (15, 0), (15, 18), (21, 22), (21, 5), (21, 20), (22, 2), (22, 13), (3, 10), (3, 19), (3, 1), (10, 7), (10, 16), (19, 17), (19, 1), (9, 14), (9, 11), (9, 12), (14, 23), (8, 18), (8, 20), (8, 5), (18, 5), (11, 2), (11, 17), (2, 4), (1, 12), (17, 16), (12, 20), (13, 23), (13, 0), (23, 4), (7, 4), (0, 16)]}
-    # for qubit_num in qubit_size:
-    #     import networkx as nx
-    #     from math import pi
-    #     from qiskit import QuantumCircuit
-    #     trial = 0
-    #     cir = QuantumCircuit(qubit_num)
-    #     gate_list = list(nx.random_regular_graph(3, int(qubit_num), trial).edges)
-    #     # gate_list = qaoa[qubit_num]
-    #     for g in gate_list:
-    #         if len(g) == 2:
-    #             cir.rzz(pi/4, g[0], g[1])
-    #     cir_name = 'qaoa_{}_{}'.format(qubit_num, trial)
-    #     qasm = cir.qasm()
-    #     file_name = "qaoa/{}.qasm".format(cir_name)
-    #     output_file = open(file_name, "w")
-    #     output_file.write(qasm)
+    for qubit_num in qubit_size:
+        import networkx as nx
+        from math import pi
+        from qiskit import QuantumCircuit
+        trial = 0
+        cir = QuantumCircuit(qubit_num)
+        gate_list = list(nx.random_regular_graph(3, int(qubit_num), trial).edges)
+        # gate_list = qaoa[qubit_num]
+        for g in gate_list:
+            if len(g) == 2:
+                cir.rzz(pi/4, g[0], g[1])
+        cir_name = 'qaoa_{}_{}'.format(qubit_num, trial)
+        qasm = cir.qasm()
+        file_name = "qaoa/{}.qasm".format(cir_name)
+        output_file = open(file_name, "w")
+        output_file.write(qasm)
 elif gen_cir == "hamiltonian":
     import supermarq as sm
     from supermarq.benchmarks.hamiltonian_simulation import HamiltonianSimulation
